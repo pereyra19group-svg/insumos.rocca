@@ -81,6 +81,7 @@
       font-size: 1rem;
       color: var(--white);
       letter-spacing: 0.04em;
+      white-space: nowrap;
     }
 
     .nav-cta {
@@ -134,6 +135,37 @@
         linear-gradient(rgba(26,47,94,0.08) 1px, transparent 1px),
         linear-gradient(90deg, rgba(26,47,94,0.08) 1px, transparent 1px);
       background-size: 40px 40px;
+      animation: gridScroll 20s linear infinite;
+    }
+
+    @keyframes gridScroll {
+      0%   { background-position: 0 0; }
+      100% { background-position: 40px 40px; }
+    }
+
+    .hero-aurora {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 20% 80%, rgba(56,189,248,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 80% 20%, rgba(79,142,247,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 70% 40% at 50% 110%, rgba(26,47,94,0.5) 0%, transparent 60%);
+      animation: auroraShift 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes auroraShift {
+      0%   { opacity: 0.6; transform: scale(1)   rotate(0deg); }
+      33%  { opacity: 1;   transform: scale(1.05) rotate(1deg); }
+      66%  { opacity: 0.7; transform: scale(0.97) rotate(-1deg); }
+      100% { opacity: 1;   transform: scale(1.03) rotate(0.5deg); }
+    }
+
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
     }
 
     .hero-inner {
@@ -781,6 +813,21 @@
         padding-right: max(16px, env(safe-area-inset-right, 0px));
       }
 
+      .nav-logo img {
+        width: 36px;
+        height: 36px;
+      }
+
+      .nav-logo span {
+        font-size: 0.82rem;
+        letter-spacing: 0.02em;
+      }
+
+      .btn-wa-nav {
+        padding: 7px 12px;
+        font-size: 0.8rem;
+      }
+
       .ig-card {
         flex-direction: column;
         text-align: center;
@@ -807,6 +854,11 @@
     @media (max-width: 480px) {
       .photo-grid { grid-template-columns: repeat(2, 1fr); }
       .ig-mini-grid { max-width: 100%; }
+    }
+
+    @media (max-width: 380px) {
+      .nav-logo span { display: none; }
+      .btn-wa-nav svg { display: none; }
     }
 
     /* SCROLL ANIM */
@@ -1065,23 +1117,11 @@
     </div>
   </nav>
 
-  <!-- CATALOG BANNER -->
-  <div class="catalog-banner">
-    <div class="catalog-banner-inner">
-      <p>
-        <strong>Catálogo siempre actualizado</strong>
-        <span> · Precios, stock y novedades en tiempo real</span>
-      </p>
-      <a href="https://wa.me/5491172376750?text=Hola!%20Quiero%20ver%20el%20cat%C3%A1logo%20completo%20de%20productos%20%F0%9F%93%96" target="_blank" class="btn-wa-catalog">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-        Ver Catálogo
-      </a>
-    </div>
-  </div>
-
   <!-- HERO -->
   <section class="hero">
+    <canvas id="hero-canvas"></canvas>
     <div class="hero-bg"></div>
+    <div class="hero-aurora"></div>
     <div class="hero-bg-grid"></div>
     <div class="hero-inner">
 
@@ -1153,6 +1193,17 @@
 
     </div>
   </section>
+
+  <!-- CATALOG BANNER -->
+  <div class="catalog-banner">
+    <div class="catalog-banner-inner">
+      <p>Mirá todo el catálogo completo de productos</p>
+      <a href="https://wa.me/5491172376750?text=Hola!%20Quiero%20ver%20el%20cat%C3%A1logo%20completo%20de%20productos%20%F0%9F%93%96" target="_blank" class="btn-wa-catalog">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Ver por WhatsApp
+      </a>
+    </div>
+  </div>
 
   <!-- ABOUT -->
   <section id="nosotros">
@@ -1431,6 +1482,62 @@
     }, { threshold: 0.12 });
 
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+
+  <script>
+    // Hero particles
+    (function() {
+      const canvas = document.getElementById('hero-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      let W, H;
+
+      function resize() {
+        W = canvas.width  = canvas.offsetWidth;
+        H = canvas.height = canvas.offsetHeight;
+      }
+
+      function Particle() {
+        this.reset = function(fromBottom) {
+          this.x  = Math.random() * W;
+          this.y  = fromBottom ? H + 10 : Math.random() * H;
+          this.r  = Math.random() * 1.8 + 0.4;
+          this.vx = (Math.random() - 0.5) * 0.35;
+          this.vy = -(Math.random() * 0.6 + 0.15);
+          this.alpha = Math.random() * 0.45 + 0.08;
+          this.color = Math.random() < 0.6
+            ? `rgba(79,142,247,${this.alpha})`
+            : `rgba(56,189,248,${this.alpha})`;
+        };
+        this.reset(false);
+      }
+
+      function init() {
+        resize();
+        particles = Array.from({ length: 90 }, function() {
+          const p = new Particle();
+          return p;
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach(function(p) {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.y < -10) p.reset(true);
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener('resize', resize);
+      init();
+      draw();
+    })();
   </script>
 
 </body>
