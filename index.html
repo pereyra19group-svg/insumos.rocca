@@ -2,7 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="assets/image.png" />
   <title>Distribuidora Rocca | Artículos de Barbería y Peluquería</title>
   <link rel="icon" type="image/png" href="assets/image.png" />
   <meta name="description" content="Distribuidora Rocca — máquinas de corte, patilleras, afeitadoras, filos, cuchillas, capas, reparación y mucho más. Envíos a todo el país. Ciudad Evita, La Matanza." />
@@ -21,9 +24,11 @@
       --gold: #f59e0b;
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-    html { scroll-behavior: smooth; }
+    a, button { touch-action: manipulation; }
+
+    html { scroll-behavior: smooth; overflow-x: hidden; }
 
     body {
       background: var(--black);
@@ -31,6 +36,7 @@
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
       line-height: 1.6;
       overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
     }
 
     /* NAV */
@@ -43,10 +49,17 @@
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       padding: 0 24px;
-      height: 64px;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-left: max(24px, env(safe-area-inset-left, 0px));
+      padding-right: max(24px, env(safe-area-inset-right, 0px));
+      padding-bottom: 0;
+      height: calc(64px + env(safe-area-inset-top, 0px));
       display: flex;
-      align-items: center;
+      align-items: flex-end;
+      padding-bottom: 10px;
       justify-content: space-between;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
     }
 
     .nav-logo {
@@ -97,10 +110,11 @@
     /* HERO */
     .hero {
       min-height: 100vh;
+      min-height: 100svh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 140px 24px 60px;
+      padding: calc(140px + env(safe-area-inset-top, 0px)) 24px 60px;
       position: relative;
       overflow: hidden;
     }
@@ -760,7 +774,12 @@
 
     /* RESPONSIVE */
     @media (max-width: 768px) {
-      nav { padding: 0 16px; }
+      nav {
+        padding: 0 16px;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+      }
 
       .ig-card {
         flex-direction: column;
@@ -943,8 +962,8 @@
     /* WA FLOAT */
     .wa-float {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
+      bottom: max(24px, env(safe-area-inset-bottom, 24px));
+      right: max(24px, env(safe-area-inset-right, 24px));
       z-index: 200;
       display: flex;
       align-items: center;
@@ -1008,6 +1027,26 @@
     @media (max-width: 768px) {
       .map-wrapper iframe { height: 280px; }
     }
+
+    /* iOS < 15: aspect-ratio fallback */
+    @supports not (aspect-ratio: 1) {
+      .photo-item::before,
+      .ig-mini-grid img::before {
+        float: left;
+        padding-top: 100%;
+        content: '';
+      }
+      .photo-item::after,
+      .ig-mini-grid img::after {
+        display: block;
+        content: '';
+        clear: both;
+      }
+      .photo-item { height: 0; overflow: visible; }
+    }
+
+    /* iOS: evitar zoom en inputs, asegurar font-size >= 16px */
+    input, select, textarea { font-size: 16px; }
   </style>
 </head>
 <body>
